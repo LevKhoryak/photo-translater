@@ -37,6 +37,7 @@ function App() {
     })
   }
 
+  
   const analyzeFeed = () => {
     let video = videoRef.current;
     if (video === null)
@@ -44,10 +45,12 @@ function App() {
     cocoSsd.load()
       .then(model => {
         setLoaded(true);
-        setInterval(() => {
+        let drawPredictions = () => {
           model.detect(video)
             .then(predictions => { setPredictions(predictions) });
-        }, 10);
+            requestAnimationFrame(drawPredictions);
+        }
+        requestAnimationFrame(drawPredictions);
       });
   }
 
